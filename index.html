@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayNest - Find Your Perfect Stay</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">StayNest</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#listings">Listings</a></li>
+                <li><a href="#favorites" id="favoritesLink">Favorites</a></li>
+                <li><a href="#myBookings" id="myBookingsLink" class="hidden">My Bookings</a></li>
+                <li><a href="#admin" id="adminLink" class="hidden">Admin Panel</a></li>
+            </ul>
+            <div id="authButtons">
+                <button id="loginBtn" class="btn-secondary">Login</button>
+                <button id="logoutBtn" class="btn-secondary hidden">Logout</button>
+                <button id="addListingBtn" class="btn-primary hidden">Add Listing</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <h1>Find Your Perfect Stay</h1>
+            <p>Discover unique homes and experiences around the world.</p>
+        </section>
+
+        <section id="filters" class="filters">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search by title, location, or description...">
+                <button id="searchBtn" class="btn-secondary">🔍 Search</button>
+            </div>
+            <div class="filter-controls">
+                <select id="typeFilter">
+                    <option value="">All Types</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="house">House</option>
+                    <option value="studio">Studio</option>
+                    <option value="villa">Villa</option>
+                    <option value="condo">Condo</option>
+                </select>
+                <select id="cityFilter">
+                    <option value="">All Cities</option>
+                    <option value="Casablanca">Casablanca</option>
+                    <option value="Marrakech">Marrakech</option>
+                    <option value="Rabat">Rabat</option>
+                    <option value="Tangier">Tangier</option>
+                    <option value="Agadir">Agadir</option>
+                    <option value="Fes">Fes</option>
+                </select>
+                <div class="price-slider">
+                    <label for="priceRange">Max Price: <span id="priceValue">3000</span> MAD</label>
+                    <input type="range" id="priceRange" min="300" max="5000" value="3000" step="100">
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="availabilityFilter">
+                    <span class="slider"></span>
+                    Available Only
+                </label>
+            </div>
+        </section>
+
+        <section id="listings" class="listings">
+            <h2>Rental Listings</h2>
+            <div id="listingGrid" class="listing-grid">
+                <!-- Listings will be dynamically added here -->
+            </div>
+            <div id="emptyState" class="empty-state">
+                <h3>No listings found</h3>
+                <p>Try adjusting your filters or add a new listing!</p>
+            </div>
+        </section>
+
+        <section id="favorites" class="favorites hidden">
+            <h2>My Favorites</h2>
+            <div id="favoritesGrid" class="listing-grid">
+                <!-- Favorite listings will be dynamically added here -->
+            </div>
+            <div id="emptyFavorites" class="empty-state hidden">
+                <h3>No favorites yet</h3>
+                <p>Start adding listings to your favorites!</p>
+            </div>
+        </section>
+
+        <section id="myBookings" class="my-bookings hidden">
+            <h2>My Bookings</h2>
+            <div id="myBookingsList" class="bookings-list">
+                <!-- User bookings will be dynamically added here -->
+            </div>
+            <div id="emptyMyBookings" class="empty-state hidden">
+                <h3>No bookings yet</h3>
+                <p>Start exploring and book your perfect stay!</p>
+            </div>
+        </section>
+
+        <section id="admin" class="admin hidden">
+            <div class="admin-header">
+                <h2>Admin Dashboard</h2>
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="overview">📊 Overview</button>
+                    <button class="tab-btn" data-tab="listings">🏠 Manage Listings</button>
+                    <button class="tab-btn" data-tab="bookings">📅 Bookings</button>
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overviewTab" class="admin-tab-content active">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">🏠</div>
+                        <h3>Total Listings</h3>
+                        <p id="totalListings">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <h3>Available</h3>
+                        <p id="availableListings">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <h3>Total Bookings</h3>
+                        <p id="totalBookings">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <h3>Total Revenue</h3>
+                        <p id="totalRevenue">0 MAD</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔑</div>
+                        <h3>Rented Now</h3>
+                        <p id="rentedNow">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">❤️</div>
+                        <h3>Favorites</h3>
+                        <p id="totalFavorites">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listings Management Tab -->
+            <div id="listingsTab" class="admin-tab-content">
+                <div class="admin-toolbar">
+                    <button id="addListingBtnAdmin" class="btn-primary">➕ Add New Listing</button>
+                    <div class="admin-search">
+                        <input type="text" id="adminSearchInput" placeholder="Search listings...">
+                        <select id="adminStatusFilter">
+                            <option value="">All Status</option>
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                        <select id="adminTypeFilter">
+                            <option value="">All Types</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="house">House</option>
+                            <option value="studio">Studio</option>
+                            <option value="villa">Villa</option>
+                            <option value="condo">Condo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admin-listings-container">
+                    <div class="admin-listings-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Location</th>
+                                    <th>Type</th>
+                                    <th>Price/Night</th>
+                                    <th>Status</th>
+                                    <th>Bookings</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminListingsTableBody">
+                                <!-- Listings will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="adminListingsGrid" class="admin-listings-grid">
+                        <!-- Alternative grid view -->
+                    </div>
+                </div>
+                <div id="emptyAdminListings" class="empty-state">
+                    <h3>No listings found</h3>
+                    <p>Click "Add New Listing" to create your first property listing.</p>
+                </div>
+            </div>
+
+            <!-- Bookings Tab -->
+            <div id="bookingsTab" class="admin-tab-content">
+                <div class="bookings-section">
+                    <div class="bookings-header">
+                        <h3>All Bookings</h3>
+                        <select id="bookingStatusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div id="bookingsList" class="bookings-list">
+                        <!-- Bookings will be dynamically added here -->
+                    </div>
+                    <div id="emptyBookings" class="empty-state">
+                        <p>No bookings yet. Bookings will appear here once users make reservations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login to StayNest</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+            <div class="login-info">
+                <p><strong>Demo Credentials:</strong></p>
+                <p>Admin: admin / admin123</p>
+                <p>User: user / user123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Listing -->
+    <div id="listingModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Add New Listing</h2>
+            <form id="listingForm">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">City</label>
+                    <select id="location" required>
+                        <option value="">Select a city</option>
+                        <option value="Casablanca">Casablanca</option>
+                        <option value="Marrakech">Marrakech</option>
+                        <option value="Rabat">Rabat</option>
+                        <option value="Tangier">Tangier</option>
+                        <option value="Agadir">Agadir</option>
+                        <option value="Fes">Fes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price per Night (MAD)</label>
+                    <input type="number" id="price" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Property Type</label>
+                    <select id="type" required>
+                        <option value="apartment">Apartment</option>
+                        <option value="house">House</option>
+                        <option value="studio">Studio</option>
+                        <option value="villa">Villa</option>
+                        <option value="condo">Condo</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bedrooms">Bedrooms</label>
+                        <input type="number" id="bedrooms" min="0" max="20" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bathrooms">Bathrooms</label>
+                        <input type="number" id="bathrooms" min="0" max="20" step="0.5" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxGuests">Max Guests</label>
+                        <input type="number" id="maxGuests" min="1" max="50" value="2" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="image">Main Image URL</label>
+                    <input type="url" id="image" placeholder="https://example.com/image.jpg" oninput="previewImage(this.value)">
+                    <div id="imagePreview" class="image-preview hidden">
+                        <img id="previewImg" src="" alt="Preview">
+                        <p class="preview-text">Image Preview</p>
+                    </div>
+                    <small class="form-hint">Enter a valid image URL (e.g., from Unsplash, Pexels, or your own server)</small>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="5" required placeholder="Describe the property, its features, location advantages, and what makes it special..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Amenities</label>
+                    <div class="amenities-grid">
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="wifi" class="amenity-input">
+                            <span>WiFi</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="parking" class="amenity-input">
+                            <span>Parking</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="pool" class="amenity-input">
+                            <span>Pool</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="kitchen" class="amenity-input">
+                            <span>Kitchen</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="ac" class="amenity-input">
+                            <span>Air Conditioning</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="heating" class="amenity-input">
+                            <span>Heating</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="tv" class="amenity-input">
+                            <span>TV</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="washer" class="amenity-input">
+                            <span>Washer</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="balcony" class="amenity-input">
+                            <span>Balcony</span>
+                        </label>
+                        <label class="amenity-checkbox">
+                            <input type="checkbox" value="gym" class="amenity-input">
+                            <span>Gym</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="toggle">
+                        <input type="checkbox" id="available" checked>
+                        <span class="slider"></span>
+                        Available for Booking
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary">Save Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Booking -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Book Your Stay</h2>
+            <div id="bookingDetails" class="booking-details-header"></div>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="checkin">Check-in Date</label>
+                    <input type="date" id="checkin" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout">Check-out Date</label>
+                    <input type="date" id="checkout" required>
+                </div>
+                <div class="form-group">
+                    <label for="guests">Number of Guests</label>
+                    <input type="number" id="guests" min="1" value="1" required>
+                </div>
+                <div class="total-price">
+                    <p>Total: <span id="totalPrice">0</span> MAD</p>
+                </div>
+                <button type="submit" class="btn-primary">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 StayNest. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
